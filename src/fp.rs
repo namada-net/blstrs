@@ -63,6 +63,7 @@ const R2: Fp = Fp(blst_fp {
 /// `Fp` values are always in Montgomery form; i.e., Fp(a) = aR mod p, with R = 2^384. `blst_fp.l`
 /// is in little-endian `u64` limbs format.
 #[derive(Copy, Clone)]
+#[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[repr(transparent)]
 pub struct Fp(pub(crate) blst_fp);
 

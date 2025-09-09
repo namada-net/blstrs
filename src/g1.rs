@@ -10,18 +10,19 @@ use std::io::Read;
 
 use blst::*;
 use group::{
-    prime::{PrimeCurve, PrimeCurveAffine, PrimeGroup},
     Curve, Group, GroupEncoding, UncompressedEncoding, WnafGroup,
+    prime::{PrimeCurve, PrimeCurveAffine, PrimeGroup},
 };
 use rand_core::RngCore;
 use subtle::{Choice, ConditionallySelectable, CtOption};
 
-use crate::{fp::Fp, Bls12, Engine, G2Affine, Gt, PairingCurveAffine, Scalar};
+use crate::{Bls12, Engine, G2Affine, Gt, PairingCurveAffine, Scalar, fp::Fp};
 
 /// This is an element of $\mathbb{G}_1$ represented in the affine coordinate space.
 /// It is ideal to keep elements in this representation to reduce memory usage and
 /// improve performance through the use of mixed curve model arithmetic.
 #[derive(Copy, Clone)]
+#[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[repr(transparent)]
 pub struct G1Affine(pub(crate) blst_p1_affine);
 
@@ -446,6 +447,7 @@ impl G1Affine {
 
 /// This is an element of $\mathbb{G}_1$ represented in the projective coordinate space.
 #[derive(Copy, Clone)]
+#[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[repr(transparent)]
 pub struct G1Projective(pub(crate) blst_p1);
 
@@ -933,9 +935,10 @@ mod tests {
             0x12b108ac33643c3e,
         ]);
 
-        let gen = G1Affine::generator();
+        let generator = G1Affine::generator();
         let z2 = z.square();
-        let mut test = G1Projective::from_raw_unchecked(gen.x() * z2, gen.y() * (z2 * z), z);
+        let mut test =
+            G1Projective::from_raw_unchecked(generator.x() * z2, generator.y() * (z2 * z), z);
 
         assert_eq!(test.is_on_curve().unwrap_u8(), 1);
 

@@ -8,7 +8,7 @@ use core::{
 };
 
 use crate::{
-    fp::{Fp, FROBENIUS_COEFF_FP6_C1, FROBENIUS_COEFF_FP6_C2},
+    fp::{FROBENIUS_COEFF_FP6_C1, FROBENIUS_COEFF_FP6_C2, Fp},
     fp2::Fp2,
 };
 
@@ -18,6 +18,7 @@ use subtle::{Choice, ConditionallySelectable, ConstantTimeEq, CtOption};
 
 /// This represents an element $c_0 + c_1 v + c_2 v^2$ of $\mathbb{F}_{p^6} = \mathbb{F}_{p^2} / v^3 - u - 1$.
 #[derive(Copy, Clone)]
+#[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[repr(transparent)]
 pub struct Fp6(pub(crate) blst_fp6);
 

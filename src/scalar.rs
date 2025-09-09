@@ -21,6 +21,7 @@ use subtle::{Choice, ConditionallySelectable, ConstantTimeEq, CtOption};
 ///
 /// The inner representation `blst_fr` is stored in Montgomery form as little-endian `u64` limbs.
 #[derive(Default, Clone, Copy)]
+#[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[repr(transparent)]
 pub struct Scalar(pub(crate) blst_fr);
 
@@ -387,7 +388,7 @@ impl Field for Scalar {
         // (t - 1) // 2 = 6104339283789297388802252303364915521546564123189034618274734669823
         ff::helpers::sqrt_tonelli_shanks(
             self,
-            &[
+            [
                 0x7fff_2dff_7fff_ffff,
                 0x04d0_ec02_a9de_d201,
                 0x94ce_bea4_199c_ec04,

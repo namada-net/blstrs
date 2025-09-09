@@ -15,6 +15,7 @@ use crate::{fp::Fp, fp2::Fp2, fp6::Fp6};
 
 /// This represents an element $c_0 + c_1 w$ of $\mathbb{F}_{p^12} = \mathbb{F}_{p^6} / w^2 - v$.
 #[derive(Copy, Clone, PartialEq, Eq)]
+#[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[repr(transparent)]
 pub struct Fp12(pub(crate) blst_fp12);
 

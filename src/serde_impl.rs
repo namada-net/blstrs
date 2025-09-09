@@ -2,16 +2,16 @@ use core::convert::TryFrom;
 use core::fmt;
 use core::marker::PhantomData;
 
-use group::{prime::PrimeCurveAffine, Curve};
+use group::{Curve, prime::PrimeCurveAffine};
 use serde::{
+    Deserialize, Deserializer, Serialize, Serializer,
     de::{Error as DeserializeError, SeqAccess, Visitor},
     ser::SerializeTuple,
-    Deserialize, Deserializer, Serialize, Serializer,
 };
 
 use crate::{
-    fp::Fp, fp12::Fp12, fp2::Fp2, fp6::Fp6, G1Affine, G1Projective, G2Affine, G2Projective, Gt,
-    MillerLoopResult, Scalar,
+    G1Affine, G1Projective, G2Affine, G2Projective, Gt, MillerLoopResult, Scalar, fp::Fp, fp2::Fp2,
+    fp6::Fp6, fp12::Fp12,
 };
 
 const ERR_CODE: &str = "deserialized bytes don't encode a group element";

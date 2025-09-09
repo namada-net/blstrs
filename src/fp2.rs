@@ -11,9 +11,10 @@ use ff::Field;
 use rand_core::RngCore;
 use subtle::{Choice, ConditionallySelectable, ConstantTimeEq, CtOption};
 
-use crate::fp::{Fp, FROBENIUS_COEFF_FP2_C1};
+use crate::fp::{FROBENIUS_COEFF_FP2_C1, Fp};
 
 #[derive(Copy, Clone)]
+#[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[repr(transparent)]
 pub struct Fp2(pub(crate) blst_fp2);
 

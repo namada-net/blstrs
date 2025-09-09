@@ -9,18 +9,19 @@ use core::{
 
 use blst::*;
 use group::{
-    prime::{PrimeCurve, PrimeCurveAffine, PrimeGroup},
     Curve, Group, GroupEncoding, UncompressedEncoding, WnafGroup,
+    prime::{PrimeCurve, PrimeCurveAffine, PrimeGroup},
 };
 use rand_core::RngCore;
 use subtle::{Choice, ConditionallySelectable, CtOption};
 
-use crate::{fp2::Fp2, Bls12, Engine, G1Affine, Gt, PairingCurveAffine, Scalar};
+use crate::{Bls12, Engine, G1Affine, Gt, PairingCurveAffine, Scalar, fp2::Fp2};
 
 /// This is an element of $\mathbb{G}_2$ represented in the affine coordinate space.
 /// It is ideal to keep elements in this representation to reduce memory usage and
 /// improve performance through the use of mixed curve model arithmetic.
 #[derive(Copy, Clone)]
+#[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[repr(transparent)]
 pub struct G2Affine(pub(crate) blst_p2_affine);
 

@@ -1,4 +1,4 @@
-use crate::{fp12::Fp12, G1Affine, G2Affine, Gt};
+use crate::{G1Affine, G2Affine, Gt, fp12::Fp12};
 use core::ops::{Add, AddAssign};
 use ff::Field;
 use subtle::{Choice, ConditionallySelectable};
@@ -149,6 +149,7 @@ pub fn unique_messages(msgs: &[&[u8]]) -> bool {
 /// of the pairing function. `MillerLoopResult`s cannot be compared with each
 /// other until `.final_exponentiation()` is called, which is also expensive.
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[repr(transparent)]
 pub struct MillerLoopResult(pub(crate) Fp12);
 
@@ -174,7 +175,7 @@ impl pairing_lib::MillerLoopResult for MillerLoopResult {
     }
 }
 
-impl<'a, 'b> Add<&'b MillerLoopResult> for &'a MillerLoopResult {
+impl<'b> Add<&'b MillerLoopResult> for &MillerLoopResult {
     type Output = MillerLoopResult;
 
     #[inline]

@@ -11,7 +11,7 @@ use group::Group;
 use rand_core::RngCore;
 use subtle::{Choice, ConstantTimeEq};
 
-use crate::{fp::Fp, fp12::Fp12, fp2::Fp2, fp6::Fp6, traits::Compress, Scalar};
+use crate::{Scalar, fp::Fp, fp2::Fp2, fp6::Fp6, fp12::Fp12, traits::Compress};
 
 /// This is an element of $\mathbb{G}_T$, the target group of the pairing function. As with
 /// $\mathbb{G}_1$ and $\mathbb{G}_2$ this group has order $q$.
@@ -19,6 +19,7 @@ use crate::{fp::Fp, fp12::Fp12, fp2::Fp2, fp6::Fp6, traits::Compress, Scalar};
 /// Typically, $\mathbb{G}_T$ is written multiplicatively but we will write it additively to
 /// keep code and abstractions consistent.
 #[derive(Copy, Clone, Debug, Default)]
+#[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[repr(transparent)]
 pub struct Gt(pub(crate) Fp12);
 
@@ -397,12 +398,12 @@ impl Compress for Gt {
 mod tests {
     use super::*;
 
-    use group::{prime::PrimeCurveAffine, Curve};
+    use group::{Curve, prime::PrimeCurveAffine};
     use pairing_lib::{Engine, MillerLoopResult, MultiMillerLoop};
     use rand_core::SeedableRng;
     use rand_xorshift::XorShiftRng;
 
-    use crate::{pairing, Bls12, G1Affine, G1Projective, G2Affine, G2Prepared, G2Projective};
+    use crate::{Bls12, G1Affine, G1Projective, G2Affine, G2Prepared, G2Projective, pairing};
 
     #[test]
     fn test_gt_generator() {
